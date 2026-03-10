@@ -1,7 +1,7 @@
 # Mr. Trampoline's Dance Mix
 > A 2D mobile arcade game fusing physics-based combo building with rhythm game risk/reward mechanics.
 
-![gameplay gif](https://static.wixstatic.com/media/5afcba_9c55074ff70a4015b40809b670710049~mv2.gif)
+![gameplay gif](https://imgur.com/a/PgzLUFA)
 
 [▶ Play on itch.io](https://schokolasbotter.itch.io/mr-trampolines-dance-mix) | [📁 View Source](https://github.com/Schokolasbotter/MrTrampoline)
 
@@ -85,7 +85,7 @@ Supporting systems: `UIManager`, `MusicManager`, `EffectPlayer`, `SpawnerScript`
 
 The multiplier system achieved its design goal — playtests produced genuine tension and satisfying high-score chasing. The event-driven input architecture was a good decision that kept touch handling cleanly separated.
 
-If I rebuilt this today, the main change would be breaking `GameManager` into smaller, single-responsibility systems. In its current form it handles state, scoring, camera, difficulty, spawning, and audio triggers in one class — a God Class that made late-stage changes risky and harder to reason about than they needed to be. I'd now use a proper event bus or messaging system to let decoupled systems react to state changes independently.
+If I rebuilt this today, the main change would be breaking `GameManager` into smaller, single-responsibility systems — one for scoring, one for camera, one for difficulty scaling. In its current form it handles state, scoring, camera, difficulty, spawning, and audio triggers in one class — a God Class that made late-stage changes risky and harder to reason about than they needed to be. Isolating each responsibility would make the codebase easier to extend and far safer to change.
 
 ---
 
