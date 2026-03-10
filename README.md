@@ -1,15 +1,102 @@
-# MrTrampoline
-3nd Year BSc Games Programming - Final Game Project
+# Mr. Trampoline's Dance Mix
+> A 2D mobile arcade game fusing physics-based combo building with rhythm game risk/reward mechanics.
 
-Itch.Io Page: https://schokolasbotter.itch.io/mr-trampolines-dance-mix
+![gameplay gif]([ADD_GIF_HERE](https://static.wixstatic.com/media/5afcba_9c55074ff70a4015b40809b670710049~mv2.gif))
 
-Project Description: 
+[▶ Play on itch.io](https://schokolasbotter.itch.io/mr-trampolines-dance-mix) | [📁 View Source](https://github.com/Schokolasbotter/MrTrampoline)
 
-This is my final project during my 3rd year BSc Games programming and is a Solo Project of our own choosing. I did a few design challenges prior to the year in which I designed games from a random game name generator. Mr Trampoline's Dance Mix came up and once I had to choose the game I was going to make, I decided to continue this initial design. This game is a 2D mobile arcade game and combines elements from the classic game Breakout and Dance Dance Revolution. The player has to bounce Mr Trampoline on a Trampoline stacking up multipliers and if he manages to launch the character high enough in the air, the player needs to swipe in the indicated directions to dance and score points. The game starts out easy and curves up quickly to stay challenging even for players who get better and better. I also decided to work with a junior artist and my personal friend as an exercise to work with people of different disciplines and further enhance communication skills.
+---
 
-Challenges and Lessons Learned:
+## Overview
 
-The design in itself was challenging as I had to come up with a game from a title I generated, but I loved the concept so much that I chose it as my final project. Another challenge was to communicate and brainstorm together with an artist and a musician and communicate my ideas and give constructive feedback on their work. I had to be efficient and clear so I do not waste their time and efforts, especially because both volunteered to help on this project. 
+**Platform:** iOS (Mobile) | **Engine:** Unity / C# | **Role:** Solo Developer
 
-For programming, this was the first time developing for mobile and I had to learn a lot and research a lot until I got an app on my Iphone. Then throughout the project I had to learn more and change my mindset to one of a mobile developer. This included usage of touchscreen and how to make touch commands work within the app. I ventured into the world of online as I used a free tool on itch.io for an online leaderboard which introduced a world of API from other users to me. This was also very challenging it did make things easier for me, but the functionality didn't fit my project fully. I had to adapt and learn. 
+Mr. Trampoline's Dance Mix is a solo-developed mobile arcade title built for iOS. The player bounces a character on a trampoline to build a score multiplier — launch high enough and a rhythm phase triggers, where the player must swipe in the correct directions to score. Miss a swipe and your multiplier resets entirely. The difficulty scales continuously, rewarding mastery while punishing greed.
 
+Developed in collaboration with a freelance artist and musician, managing full cross-discipline production as the sole programmer.
+
+---
+
+## Technical Contributions
+
+- Designed and implemented a **dual-layer multiplier system** driving the core risk/reward loop
+- Built a **custom swipe detection system** for precise mobile touch input
+- Implemented a **10-tier dynamic difficulty system** scaling direction complexity and spawn rates with score
+- Engineered a **directional camera shake system** providing physical feedback on player input
+- Integrated a **third-party leaderboard REST API** for persistent high score tracking
+- Developed a **coroutine-based score animation system** for satisfying score roll feedback
+- Deployed a complete **iOS build pipeline** — first-time mobile development to shipped App
+
+---
+
+## Technical Deep Dive: The Risk/Reward Multiplier System
+
+The core design challenge was making the player *feel* tension on every single launch — without the game feeling unfair.
+
+The solution was a dual-layer multiplier stack. The **first layer** (`multiplier`) builds passively as the character bounces, rewarding sustained play and punishing falls. The **second layer** (`bonusCount`) is active: when the character launches above a threshold, a rhythm phase opens and the player must swipe in the indicated directions. Each correct swipe increases `danceScore` and the window for additional swipes stays open — but the swipe windows are intentionally short.
+
+The risk: a single wrong swipe calls `resetMultiplier()`, wiping both layers instantly and forcing the state machine back to the trampoline phase. The final score calculation on a successful dance phase is:
+
+```csharp
+// Both multipliers applied only on a clean run
+totalDanceScore += (int)(danceScore * multiplier * bonusCount);
+```
+
+This creates a compounding high-risk/high-reward decision on every launch cycle — attempt more swipes for a bigger multiplier, or play it safe and bank what you have.
+
+---
+
+## Technical Deep Dive: Dynamic Difficulty Scaling
+
+Difficulty is driven by score thresholds mapped to a C# switch expression, unlocking new arrow directions and increasing spawn rates across 10 tiers:
+
+```csharp
+gameDifficulty = totalScore switch
+{
+    int x when x < scoreThreshold1 => 0,
+    int x when x < scoreThreshold2 => 1,
+    // ...
+    int x when x >= scoreThreshold9 => 9,
+    _ => 0
+};
+```
+
+At difficulty 0, only cardinal directions are valid swipes. Higher tiers progressively introduce diagonal directions, increasing the cognitive load during the rhythm phase. Obstacle spawning activates at tier 4, with additional obstacles scaling unboundedly beyond tier 9.
+
+---
+
+## Architecture Overview
+
+The game is managed by a central `GameManager` driving a hand-rolled state machine with five states:
+
+```
+GameState: start → trampoline ⇄ dance → end
+                        ↑
+                      pause
+```
+
+Input is handled via an event-driven pattern — `TouchManager` raises `SwipeDetect` and `StartGame` events that `GameManager` subscribes to, decoupling input detection from game logic.
+
+Supporting systems: `UIManager`, `MusicManager`, `EffectPlayer`, `SpawnerScript`, `SpriteManager`, `DiscoScript`.
+
+---
+
+## Retrospective
+
+The multiplier system achieved its design goal — playtests produced genuine tension and satisfying high-score chasing. The event-driven input architecture was a good decision that kept touch handling cleanly separated.
+
+If I rebuilt this today, the main change would be breaking `GameManager` into smaller, single-responsibility systems. In its current form it handles state, scoring, camera, difficulty, spawning, and audio triggers in one class — a God Class that made late-stage changes risky and harder to reason about than they needed to be. I'd now use a proper event bus or messaging system to let decoupled systems react to state changes independently.
+
+---
+
+## Tech Stack
+
+`Unity` · `C#` · `iOS` · `Mobile Touch Input` · `Coroutines` · `REST API Integration`
+
+---
+
+## Credits
+
+- **Programming:** Laurent Klein  
+- **Art:** [Artist Name]  
+- **Music:** [Musician Name]
