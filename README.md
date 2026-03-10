@@ -1,7 +1,7 @@
 # Mr. Trampoline's Dance Mix
 > A 2D mobile arcade game fusing physics-based combo building with rhythm game risk/reward mechanics.
 
-![gameplay gif]([ADD_GIF_HERE](https://static.wixstatic.com/media/5afcba_9c55074ff70a4015b40809b670710049~mv2.gif))
+![gameplay gif](https://static.wixstatic.com/media/5afcba_9c55074ff70a4015b40809b670710049~mv2.gif)
 
 [▶ Play on itch.io](https://schokolasbotter.itch.io/mr-trampolines-dance-mix) | [📁 View Source](https://github.com/Schokolasbotter/MrTrampoline)
 
@@ -25,7 +25,7 @@ Developed in collaboration with a freelance artist and musician, managing full c
 - Engineered a **directional camera shake system** providing physical feedback on player input
 - Integrated a **third-party leaderboard REST API** for persistent high score tracking
 - Developed a **coroutine-based score animation system** for satisfying score roll feedback
-- Deployed a complete **iOS build pipeline** — first-time mobile development to shipped App
+- Deployed a complete **iOS build pipeline** — first-time mobile development to App
 
 ---
 
@@ -98,5 +98,5 @@ If I rebuilt this today, the main change would be breaking `GameManager` into sm
 ## Credits
 
 - **Programming:** Laurent Klein  
-- **Art:** [Artist Name]  
-- **Music:** [Musician Name]
+- **Art:** [Chloe Moteley](https://nuudle.itch.io)  
+- **Music:** [Sacha Ewen](https://www.youtube.com/@fawldeer)
