@@ -1,7 +1,7 @@
 # Mr. Trampoline's Dance Mix
 > A 2D mobile arcade game fusing physics-based combo building with rhythm game risk/reward mechanics.
 
-![gameplay gif](https://imgur.com/a/PgzLUFA)
+![gameplay gif](trampoline_gameplay.gif)
 
 [▶ Play on itch.io](https://schokolasbotter.itch.io/mr-trampolines-dance-mix) | [📁 View Source](https://github.com/Schokolasbotter/MrTrampoline)
 
