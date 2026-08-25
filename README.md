@@ -64,6 +64,25 @@ gameDifficulty = totalScore switch
 At difficulty 0, only cardinal directions are valid swipes. Higher tiers progressively introduce diagonal directions, increasing the cognitive load during the rhythm phase. Obstacle spawning activates at tier 4, with additional obstacles scaling unboundedly beyond tier 9.
 
 ---
+## Technical Deep Dive: Dual Leaderboards and Offline Fallback
+
+A mobile arcade game built around chasing a high score is only as good as its leaderboard —
+and on mobile you cannot assume a connection exists. The game therefore runs **two
+leaderboards at once**.
+
+The online board is hosted and fetched over REST. The offline board is a `ScriptableObject`
+(`OfflineLeaderBoard.asset`) holding parallel `names` and `scores` arrays that persist locally
+between sessions. Both render into their own set of pre-built UI rows, cached once in `Awake()`
+by walking each entry's child transforms rather than searching the hierarchy per refresh.
+
+Score submission tracks its own lifecycle through `uploadSuccessful` and `uploadFinished` flags,
+so the UI can distinguish "still uploading" from "upload failed" from "uploaded, here's your
+global rank" — rather than silently failing and leaving the player staring at an empty board.
+A player with no signal still gets a working personal high-score table and loses nothing; when
+they reconnect, the online rank appears alongside it.
+
+---
+
 
 ## Architecture Overview
 
